@@ -103,11 +103,6 @@ void ledstripLoop() {
       if (uint8_t(currentMillis - lastMillis) > FLAME_SPEED) {
         lastMillis = currentMillis;
 
-        // Step 1.  Cool down every cell a little
-        for (uint8_t i = 0; i < NUM_LEDS; i++) {
-          flameHeat[i] = qsub8(flameHeat[i], random8(0, (FLAME_COOLING + 2)));
-        }
-
         // Step 2.  Heat from each cell drifts 'up' and diffuses a little
         for (uint8_t i = NUM_LEDS - 1; i >= 2; i--) {
           flameHeat[i] = (flameHeat[i - 1] + flameHeat[i - 2] + flameHeat[i - 2] ) / 3;
@@ -124,6 +119,10 @@ void ledstripLoop() {
           //uint8_t colorindex = scale8(flameHeat[i], 200);
           //leds[i] = ColorFromPalette(palette, colorindex);
           leds[i] = HeatColor(flameHeat[i]);
+
+          // Step 1.  Cool down every cell a little
+          // Optimization: do this in the same loop here.
+          flameHeat[i] = qsub8(flameHeat[i], random8(0, (FLAME_COOLING + 2)));
         }
       }
       break;
@@ -134,8 +133,8 @@ void ledstripLoop() {
       uint8_t currentMillis = millis();
       if (uint8_t(currentMillis - lastMillis) > 8) {
         lastMillis = currentMillis;
-        noiseYScale += uint32_t(64) << slowness;
         //noiseYScale++;
+        noiseYScale += uint16_t(63) << slowness;
       }
 
       uint8_t i = NUM_LEDS;
@@ -155,7 +154,7 @@ void ledstripLoop() {
 
 void ledstripNextSpeed() {
   slowness--;
-  if (slowness & 0xf0) {
+  if (slowness > 5) { // overflow
     slowness = 5;
   }
   eeprom_write_byte((unsigned char*)(2), slowness);

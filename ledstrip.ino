@@ -18,6 +18,7 @@ typedef enum {
   MODE_NOISE2,
   MODE_NOISE3,
   MODE_NOISE4,
+  MODE_NOISE5,
   MODE_EOF,
 } mode_t;
 
@@ -32,6 +33,27 @@ uint32_t noiseYScale = 0;
 #define FLAME_COOLING 30
 #define FLAME_SPARKING 120
 CRGBPalette16 palette;
+
+
+const TProgmemRGBPalette16 RedBlueColors_p FL_PROGMEM =
+{
+    0xff6600,
+    0xff3300,
+    0xff0000,
+    0xff0011,
+    0xff0044,
+    0xee0077,
+    0xbb00aa,
+    0x8800dd,
+    0x6600ff,
+    0x4400ff,
+    0x2200ff,
+    0x0000ff,
+    0x0000ff,
+    0x2222ff,
+    0x4444ff,
+    0x6666ff
+};
 
 void ledstripSetup() {
 #if defined (__AVR_ATtiny85__)
@@ -150,7 +172,6 @@ void ledstripUpdateMode() {
     mode = 0; // first mode: MODE_RAINBOW
   }
   switch (mode) {
-    case MODE_FLAME:
     case MODE_NOISE1:
       palette = LavaColors_p;
       break;
@@ -162,6 +183,9 @@ void ledstripUpdateMode() {
       break;
     case MODE_NOISE4:
       palette = RainbowColors_p;
+      break;
+    case MODE_NOISE5:
+      palette = RedBlueColors_p;
       break;
   }
 }

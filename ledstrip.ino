@@ -76,7 +76,7 @@ void ledstripLoop() {
 
     case MODE_RAINBOW: {
       uint8_t currentMillis = millis();
-      if (uint8_t(currentMillis - lastMillis) >= uint8_t(2 << slowness)) {
+      if (uint8_t(currentMillis - lastMillis) >= uint8_t(7 << slowness)) {
         lastMillis = currentMillis;
         rainbowColor++;
       }
@@ -132,7 +132,7 @@ void ledstripLoop() {
     default: // NOISE 1-4
       // Move along the Y axis (time).
       uint8_t currentMillis = millis();
-      if (uint8_t(currentMillis - lastMillis) > 4) {
+      if (uint8_t(currentMillis - lastMillis) > 8) {
         lastMillis = currentMillis;
         noiseYScale += uint32_t(64) << slowness;
         //noiseYScale++;
@@ -144,7 +144,7 @@ void ledstripLoop() {
         // X location is constant, but we move along the Y at the rate of millis()
         //uint8_t index = inoise8(uint16_t(i) * 20, noiseYScale);
         //leds[i] = ColorFromPalette(palette, index);
-        int16_t index = inoise16(uint32_t(i) << 13, noiseYScale);
+        int16_t index = inoise16(uint32_t(i) << 12, noiseYScale);
         leds[i] = ColorFromPalette16(palette, index);
       } while (i);
       break;

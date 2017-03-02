@@ -118,6 +118,9 @@ void ledstripLoop() {
         for (uint8_t i = 0; i < NUM_LEDS; i++) {
           //uint8_t colorindex = scale8(flameHeat[i], 200);
           //leds[i] = ColorFromPalette(palette, colorindex);
+          // Optimization: use HeatColor instead of ColorFromPalette.
+          // When we use HeatColors_p somewhere else in the sketch, it's
+          // probably more space-efficient to use ColorFromPalette16.
           leds[i] = HeatColor(flameHeat[i]);
 
           // Step 1.  Cool down every cell a little

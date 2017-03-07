@@ -24,9 +24,9 @@ typedef enum {
 
 CRGB leds[NUM_LEDS];
 uint8_t lastMillis = 0;
-uint8_t slowness = 1;
 uint8_t rainbowColor = 0;
-uint8_t mode = MODE_RAINBOW;
+uint8_t slowness; // initialized in ledstripSetup
+uint8_t mode;     // initialized in ledstripSetup
 uint8_t flameHeat[NUM_LEDS];
 uint32_t noiseYScale = 0;
 #define FLAME_SPEED (1000 / 60) // 60fps, or 16ms per frame
@@ -76,7 +76,7 @@ void ledstripLoop() {
 
     case MODE_RAINBOW: {
       uint8_t currentMillis = millis();
-      if (uint8_t(currentMillis - lastMillis) >= uint8_t(7 << slowness)) {
+      if (uint8_t(currentMillis - lastMillis) >= uint8_t(0xe0 >> slowness)) { // may also be: 7 << slowness
         lastMillis = currentMillis;
         rainbowColor++;
       }
@@ -156,9 +156,9 @@ void ledstripLoop() {
 }
 
 void ledstripNextSpeed() {
-  slowness--;
-  if (slowness > 5) { // overflow
-    slowness = 5;
+  slowness++;
+  if (slowness > 5) {
+    slowness = 0;
   }
   eeprom_write_byte((unsigned char*)(2), slowness);
 }

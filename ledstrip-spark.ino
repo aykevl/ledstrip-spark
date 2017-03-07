@@ -21,10 +21,10 @@ int main() {
     if ((pins & B00100001) != (PINB & B00100001)) {
       pins = PINB;
       if (!(PINB & B00000001)) {
-        ledstripNextSpeed();
+        ledstripNextMode();
       }
       if (!(PINB & B00100000)) {
-        ledstripNextMode();
+        ledstripNextSpeed();
       }
       for (uint8_t i = 0xff; i; i--);
     }

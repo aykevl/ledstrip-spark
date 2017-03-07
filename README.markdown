@@ -47,9 +47,9 @@ Connect:
 
 | Pin | Function
 |-----|---------
-| P0  | button: change speed of animation (6 steps)
+| P0  | button: change animation mode
 | P1  | LED strip signal (configured for the WS2812 and 30 LEDs)
 | P2  | LOW (for a button over P0-P2)
 | P3  | LOW (for a button over P3-P5)
 | P4  | not connected
-| P5  | button: change animation mode
+| P5  | button: change speed of animation (6 steps)

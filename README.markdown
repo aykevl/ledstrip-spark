@@ -28,10 +28,20 @@ ISP](https://www.arduino.cc/en/Tutorial/ArduinoISP) sketch to emulate a
 programmer (I think it's even possible doing this with another Digispark, but I
 haven't tested this).
 
+Alternatively, you can run an in-place upgrade. I have added the file
+`bootloader_upgrade_t85_1sec.hex` which can be installed using Micronucleus, as
+usual. After Micronucleus is done, wait ~10sec, then unplug and replug, and wait
+another ~10sec just to be sure it has run (note that it runs as user program, so
+it will need 6 seconds to start and then some time to upgrade). The
+[readme](https://raw.githubusercontent.com/micronucleus/micronucleus/v1.11/upgrade/readme.txt)
+contains some additional details. Note that there is a small chance it will
+brick the chip, especially when you unplug it during the upgrade. You can also
+add a LED or buzzer between `P0` and `P1` for the signal it is ready.
+
 To install the new bootloader (replace `$ARDUINO_DIR` with the installation
 directory of the Arduino IDE software):
 
-    $ avrdude -C$ARDUINO_DIR/hardware/tools/avr/etc/avrdude.conf -v -pattiny85 -cstk500v1 -P/dev/ttyACM0 -b19200 -Uflash:w:t85_shortdelay.hex.hex:i
+    $ avrdude -C$ARDUINO_DIR/hardware/tools/avr/etc/avrdude.conf -v -pattiny85 -cstk500v1 -P/dev/ttyACM0 -b19200 -Uflash:w:bootloader_t85_1sec.hex.hex:i
 
 Now **test the bootloader** by installing a sketch using the `micronucleus`
 command. After you've disabled the reset pin, there's no going back (unless you

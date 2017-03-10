@@ -55,6 +55,27 @@ const TProgmemRGBPalette16 RedBlueColors_p FL_PROGMEM =
     0x6666ff
 };
 
+const TProgmemRGBPalette16 RedYellowColors_p FL_PROGMEM =
+{
+    0xff0088,
+    0xff0066,
+    0xff0044,
+    0xff0022,
+    0xff0000,
+    0xff1100,
+    0xff2200,
+    0xee3300,
+    0xdd4400,
+    0xcc5500,
+    0xbb6600,
+    0xaa7700,
+    0x998800,
+    0x889900,
+    0x77aa00,
+    0x66bb00,
+};
+
+
 void ledstripSetup() {
 #if defined (__AVR_ATtiny85__)
   if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
@@ -181,7 +202,7 @@ void ledstripUpdateMode() {
       palette = OceanColors_p;
       break;
     case MODE_NOISE3:
-      palette = ForestColors_p;
+      palette = RedYellowColors_p;
       break;
     case MODE_NOISE4:
       palette = RainbowColors_p;

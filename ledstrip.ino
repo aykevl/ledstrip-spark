@@ -83,6 +83,11 @@ void ledstripSetup() {
   FastLED.addLeds<WS2812, LEDS_PIN, GRB>(leds, NUM_LEDS);
   mode = eeprom_read_byte((unsigned char*)(1));
   slowness = eeprom_read_byte((unsigned char*)(2));
+  if (slowness == 0xff) { // initial value after first flash
+    // For some reason, setting 0 costs more program storage than setting any
+    // other values (4 bytes more).
+    slowness = 2;
+  }
   ledstripUpdateMode();
 }
 
@@ -177,9 +182,9 @@ void ledstripLoop() {
 }
 
 void ledstripNextSpeed() {
-  slowness++;
-  if (slowness > 5) {
-    slowness = 0;
+  slowness--;
+  if (slowness == 0xff) {
+    slowness = 5;
   }
   eeprom_write_byte((unsigned char*)(2), slowness);
 }

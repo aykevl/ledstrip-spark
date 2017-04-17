@@ -82,6 +82,9 @@ void ledstripSetup() {
 #endif
   FastLED.addLeds<WS2812, LEDS_PIN, GRB>(leds, NUM_LEDS);
   mode = eeprom_read_byte((unsigned char*)(1));
+  if (mode == 0xff) {
+    mode = MODE_RAINBOW;
+  }
   slowness = eeprom_read_byte((unsigned char*)(2));
   if (slowness == 0xff) { // initial value after first flash
     // For some reason, setting 0 costs more program storage than setting any
@@ -197,7 +200,7 @@ void ledstripNextMode() {
 
 void ledstripUpdateMode() {
   if (mode >= MODE_EOF) {
-    mode = 0; // first mode: MODE_RAINBOW
+    mode = 0; // off
   }
   switch (mode) {
     case MODE_NOISE1:
